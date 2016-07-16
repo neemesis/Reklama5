@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity
     private ProgressDialog progressDialog;
     private RecyclerView.LayoutManager mLayoutManager;
     private String lastURL;
+    private SwipeRefreshLayout srl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +103,16 @@ public class MainActivity extends AppCompatActivity
             });
         }
 
+        srl = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        if (srl != null) {
+            srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    new GetAllAdsAsync().execute(lastURL);
+                }
+            });
+        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -125,6 +137,7 @@ public class MainActivity extends AppCompatActivity
         recycler_view.setAdapter(oglasiAdapter);
 
         new GetAllAdsAsync().execute("http://m.reklama5.mk/Search?");
+
     }
 
     @Override
@@ -199,8 +212,10 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected void onPreExecute() {
+            srl.setRefreshing(true);
+            /*
             progressDialog = ProgressDialog.show(MainActivity.this, "Ве молиме почекајте...",
-                    "Симнување", true);
+                    "Симнување", true);*/
         }
 
         public ArrayList<OglasOsnovno> oo;
@@ -223,7 +238,8 @@ public class MainActivity extends AppCompatActivity
             else oglasiAdapter.setList(new ArrayList<OglasOsnovno>());
             oglasiAdapter.notifyDataSetChanged();
             mLayoutManager.scrollToPosition(0);
-            progressDialog.dismiss();
+            //progressDialog.dismiss();
+            srl.setRefreshing(false);
         }
     }
 
