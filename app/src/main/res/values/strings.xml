@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">Reklama5</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string-array name="gradovi_lista">
+        <item>Цела Македонија</item>
+        <item>Скопје</item>
+        <item>Битола</item>
+        <item>Куманово</item>
+        <item>Прилеп</item>
+        <item>Тетово</item>
+        <item>Велес</item>
+        <item>Штип</item>
+        <item>Охрид</item>
+        <item>Гостивар</item>
+        <item>Струмица</item>
+        <item>Кавадарци</item>
+        <item>Кочани</item>
+        <item>Кичево</item>
+        <item>Струга</item>
+        <item>Радовиш</item>
+        <item>Гевгелија</item>
+        <item>Дебар</item>
+        <item>Крива Паланка</item>
+        <item>Свети Николе</item>
+        <item>Неготино</item>
+        <item>Делчево</item>
+        <item>Виница</item>
+        <item>Ресен</item>
+        <item>Пробиштип</item>
+        <item>Берово</item>
+        <item>Кратово</item>
+        <item>Крушево</item>
+        <item>Македонски Брод</item>
+        <item>Валандово</item>
+        <item>Демир Хисар</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/omileni"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Омилени"/>
+        <item
+            android:id="@+id/cm"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Цела Македонија"/>
+        <item
+            android:id="@+id/sk"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Скопје"/>
+        <item
+            android:id="@+id/bt"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Битола"/>
+        <item
+            android:id="@+id/ku"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Куманово"/>
+        <item
+            android:id="@+id/pp"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Прилеп"/>
+        <item
+            android:id="@+id/te"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Тетово"/>
+        <item
+            android:id="@+id/ve"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Велес"/>
+        <item
+            android:id="@+id/st"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Штип"/>
+        <item
+            android:id="@+id/oh"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Охрид"/>
+        <item
+            android:id="@+id/gv"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Гостивар"/>
+        <item
+            android:id="@+id/sr"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Струмица"/>
+        <item
+            android:id="@+id/ka"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Кавадарци"/>
+        <item
+            android:id="@+id/ko"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Кочани"/>
+        <item
+            android:id="@+id/ki"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Кичево"/>
+        <item
+            android:id="@+id/sg"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Струга"/>
+        <item
+            android:id="@+id/ra"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Радовиш"/>
+        <item
+            android:id="@+id/ge"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Гевгелија"/>
+        <item
+            android:id="@+id/de"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Дебар"/>
+        <item
+            android:id="@+id/kp"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Крива Паланка"/>
+        <item
+            android:id="@+id/sv"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Свети Николе"/>
+        <item
+            android:id="@+id/ne"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Неготино"/>
+        <item
+            android:id="@+id/dl"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Делчево"/>
+        <item
+            android:id="@+id/vi"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Виница"/>
+        <item
+            android:id="@+id/re"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Ресен"/>
+        <item
+            android:id="@+id/pr"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Пробиштип"/>
+        <item
+            android:id="@+id/be"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Берово"/>
+        <item
+            android:id="@+id/kt"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Кратово"/>
+        <item
+            android:id="@+id/kr"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Крушево"/>
+        <item
+            android:id="@+id/mb"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Македонски Брод"/>
+        <item
+            android:id="@+id/va"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Валандово"/>
+        <item
+            android:id="@+id/dh"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Демир Хисар"/>
+
+
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share"/>
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Send"/>
+        </menu>
+    </item>
+
+</menu>
