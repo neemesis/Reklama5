@@ -33,6 +33,10 @@ public class OglasOsnovnoAdapter extends RecyclerView.Adapter<OglasOsnovnoAdapte
         }
     }
 
+    public void addItems(ArrayList<OglasOsnovno> oo) {
+        this.oglasi.addAll(oo);
+    }
+
     public void setList(ArrayList<OglasOsnovno> oglasi) {
         this.oglasi = oglasi;
     }

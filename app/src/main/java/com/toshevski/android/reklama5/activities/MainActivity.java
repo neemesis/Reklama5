@@ -1,5 +1,6 @@
 package com.toshevski.android.reklama5.activities;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import android.widget.Spinner;
 import com.toshevski.android.reklama5.R;
 import com.toshevski.android.reklama5.adapters.OglasOsnovnoAdapter;
 import com.toshevski.android.reklama5.database.Crawler;
+import com.toshevski.android.reklama5.listeners.EndlessRecyclerViewScrollListener;
 import com.toshevski.android.reklama5.pojos.OglasDetalno;
 import com.toshevski.android.reklama5.pojos.OglasOsnovno;
 
@@ -37,6 +39,9 @@ public class MainActivity extends AppCompatActivity
     private RecyclerView recycler_view;
     private ArrayList<OglasOsnovno> oglasi = new ArrayList<>();
     private OglasOsnovnoAdapter oglasiAdapter;
+    private ProgressDialog progressDialog;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private String lastURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,13 +112,19 @@ public class MainActivity extends AppCompatActivity
 
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
         oglasiAdapter = new OglasOsnovnoAdapter(this, oglasi);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recycler_view.setLayoutManager(mLayoutManager);
-        //recycler_view.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        recycler_view.addOnScrollListener(new EndlessRecyclerViewScrollListener((LinearLayoutManager) mLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                Log.i("Endless", page + " : " + totalItemsCount);
+                new AddDataAsync().execute(lastURL + "&page=" + (page + 1));
+            }
+        });
         recycler_view.setItemAnimator(new DefaultItemAnimator());
         recycler_view.setAdapter(oglasiAdapter);
 
-        new GetAllAdsAsync().execute("http://m.reklama5.mk/Search");
+        new GetAllAdsAsync().execute("http://m.reklama5.mk/Search?");
     }
 
     @Override
@@ -157,9 +168,9 @@ public class MainActivity extends AppCompatActivity
         if (idx == -1) {
             // TODO
         } else if (idx == 0)
-            new GetAllAdsAsync().execute("http://m.reklama5.mk/Search");
+            new GetAllAdsAsync().execute("http://m.reklama5.mk/Search?");
         else if (idx == 31) {
-            new GetAllAdsAsync().execute("http://m.reklama5.mk/Search?city=34");
+            new GetAllAdsAsync().execute("http://m.reklama5.mk/Search?city=34?");
         } else {
             new GetAllAdsAsync().execute("http://m.reklama5.mk/Search?city=" + idx);
         }
@@ -186,10 +197,17 @@ public class MainActivity extends AppCompatActivity
 
     class GetAllAdsAsync extends AsyncTask<String, Void, Void> {
 
+        @Override
+        protected void onPreExecute() {
+            progressDialog = ProgressDialog.show(MainActivity.this, "Ве молиме почекајте...",
+                    "Симнување", true);
+        }
+
         public ArrayList<OglasOsnovno> oo;
         @Override
         protected Void doInBackground(String... params) {
             try {
+                lastURL = params[0];
                 oo = new Crawler().getAllAds(params[0]);
                 Log.i("MM", "Golemina: " + oo.size());
             } catch (IOException e) {
@@ -204,6 +222,8 @@ public class MainActivity extends AppCompatActivity
                 oglasiAdapter.setList(oo);
             else oglasiAdapter.setList(new ArrayList<OglasOsnovno>());
             oglasiAdapter.notifyDataSetChanged();
+            mLayoutManager.scrollToPosition(0);
+            progressDialog.dismiss();
         }
     }
 
@@ -219,6 +239,29 @@ public class MainActivity extends AppCompatActivity
             }
 
             return null;
+        }
+    }
+
+    class AddDataAsync extends AsyncTask<String, Void, Void> {
+
+        ArrayList<OglasOsnovno> oo;
+        @Override
+        protected Void doInBackground(String... params) {
+            try {
+                Log.i("New URL", params[0]);
+                oo = new Crawler().getAllAds(params[0]);
+                Log.i("MM", "Golemina: " + oo.size());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            Log.i("AddDataAsync", "Dodadeni se novi..");
+            oglasiAdapter.addItems(oo);
+            oglasiAdapter.notifyDataSetChanged();
         }
     }
 }
