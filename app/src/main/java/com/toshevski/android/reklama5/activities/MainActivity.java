@@ -2,6 +2,7 @@ package com.toshevski.android.reklama5.activities;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -147,7 +148,9 @@ public class MainActivity extends AppCompatActivity
         recycler_view.addOnItemTouchListener(new RecyclerViewClickListener(getApplicationContext(),
                 recycler_view,new RecyclerViewClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        Log.i("rvClick", "DA");
+                        Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
+                        intent.putExtra("url", oglasiAdapter.getAd(position).getUrl());
+                        startActivity(intent);
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
@@ -238,6 +241,9 @@ public class MainActivity extends AppCompatActivity
             ArrayList<OglasOsnovno> oo = dbm.GetAllAds();
             Log.i("Od DB", oo.get(0).toString());
             return true;
+        } else if (id == R.id.secondActivity) {
+            Intent intent = new Intent(this, DetailsActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -314,20 +320,6 @@ public class MainActivity extends AppCompatActivity
             mLayoutManager.scrollToPosition(0);
             progressDialog.dismiss();
             srl.setRefreshing(false);
-        }
-    }
-
-    class GetDetailedAd extends AsyncTask<String, Void, Void> {
-
-        @Override
-        protected Void doInBackground(String... params) {
-            try {
-                OglasDetalno od = new Crawler().getDetailedAd(params[0]);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
         }
     }
 

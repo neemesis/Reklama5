@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.toshevski.android.reklama5.activities.DetailsActivity">
+
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/card_view"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:footerDividersEnabled="true"
+        android:headerDividersEnabled="true"
+        android:divider="@null"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
+        android:dividerHeight="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+
+        <TextView
+            android:id="@+id/pagesCounter"
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            android:layout_alignRight="@id/viewPager"
+            android:layout_alignEnd="@id/viewPager"
+            android:layout_alignBottom="@id/viewPager"
+            android:background="@color/cardview_light_background"
+            android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="Опис"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_gravity="center"
+            android:footerDividersEnabled="true"
+            android:headerDividersEnabled="true"
+            android:divider="@null"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:dividerHeight="5dp">
+            <TextView
+                android:id="@+id/det_opis"
+                android:padding="7dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </android.support.v7.widget.CardView>
+
+        <TextView
+        android:text="Цена"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_gravity="center"
+            android:footerDividersEnabled="true"
+            android:headerDividersEnabled="true"
+            android:divider="@null"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:dividerHeight="5dp">
+            <TextView
+                android:id="@+id/det_cena"
+                android:padding="7dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:text="Локација"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_gravity="center"
+            android:footerDividersEnabled="true"
+            android:headerDividersEnabled="true"
+            android:divider="@null"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:dividerHeight="5dp">
+            <TextView
+                android:id="@+id/det_lokacija"
+                android:padding="7dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </android.support.v7.widget.CardView>
+
+        <TextView
+        android:text="Објавен"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_gravity="center"
+            android:footerDividersEnabled="true"
+            android:headerDividersEnabled="true"
+            android:divider="@null"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:dividerHeight="5dp">
+            <TextView
+                android:id="@+id/det_objaven"
+                android:padding="7dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:text="Газда"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_gravity="center"
+            android:footerDividersEnabled="true"
+            android:headerDividersEnabled="true"
+            android:divider="@null"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:dividerHeight="5dp">
+            <TextView
+                android:id="@+id/det_gazda"
+                android:padding="7dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:text="Број"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:id="@+id/brojZaPovik"
+            android:layout_height="wrap_content"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_gravity="center"
+            android:footerDividersEnabled="true"
+            android:headerDividersEnabled="true"
+            android:divider="@null"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:dividerHeight="5dp">
+            <TextView
+                android:id="@+id/det_broj"
+                android:padding="7dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+</LinearLayout>
+</ScrollView>
