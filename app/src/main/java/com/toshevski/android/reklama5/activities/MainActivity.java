@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -27,7 +28,9 @@ import android.widget.Spinner;
 import com.toshevski.android.reklama5.R;
 import com.toshevski.android.reklama5.adapters.OglasOsnovnoAdapter;
 import com.toshevski.android.reklama5.database.Crawler;
+import com.toshevski.android.reklama5.database.DBManager;
 import com.toshevski.android.reklama5.listeners.EndlessRecyclerViewScrollListener;
+import com.toshevski.android.reklama5.listeners.RecyclerViewClickListener;
 import com.toshevski.android.reklama5.pojos.OglasDetalno;
 import com.toshevski.android.reklama5.pojos.OglasOsnovno;
 
@@ -136,6 +139,18 @@ public class MainActivity extends AppCompatActivity
         recycler_view.setItemAnimator(new DefaultItemAnimator());
         recycler_view.setAdapter(oglasiAdapter);
 
+        recycler_view.addOnItemTouchListener(new RecyclerViewClickListener(getApplicationContext(),
+                recycler_view,new RecyclerViewClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        Log.i("rvClick", "DA");
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        Log.i("rvLong", "DA");
+                    }
+                })
+        );
+
         new GetAllAdsAsync().execute("http://m.reklama5.mk/Search?");
 
     }
@@ -165,6 +180,12 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Log.i("onOptionsItemSelected", "action_settings");
+            DBManager dbm = new DBManager(getApplicationContext());
+            dbm.AddAd(oglasiAdapter.getAd(0));
+
+            ArrayList<OglasOsnovno> oo = dbm.GetAllAds();
+            Log.i("Od DB", oo.get(0).toString());
             return true;
         }
 
@@ -179,7 +200,12 @@ public class MainActivity extends AppCompatActivity
         int idx = id - R.id.omileni - 1;
         if (idx > 26) ++idx;
         if (idx == -1) {
-            // TODO
+            srl.setRefreshing(true);
+            DBManager dbm = new DBManager(getApplicationContext());
+            oglasiAdapter.setList(dbm.GetAllAds());
+            oglasiAdapter.notifyDataSetChanged();
+            mLayoutManager.scrollToPosition(0);
+            srl.setRefreshing(false);
         } else if (idx == 0)
             new GetAllAdsAsync().execute("http://m.reklama5.mk/Search?");
         else if (idx == 31) {

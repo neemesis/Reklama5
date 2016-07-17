@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.toshevski.android.reklama5.R;
+import com.toshevski.android.reklama5.activities.MainActivity;
 import com.toshevski.android.reklama5.pojos.OglasOsnovno;
 
 import java.util.ArrayList;
@@ -31,6 +32,10 @@ public class OglasOsnovnoAdapter extends RecyclerView.Adapter<OglasOsnovnoAdapte
             ad_time = (TextView) view.findViewById(R.id.ad_time);
             ad_image = (ImageView) view.findViewById(R.id.ad_image);
         }
+    }
+
+    public OglasOsnovno getAd(int pos) {
+        return oglasi.get(pos);
     }
 
     public void addItems(ArrayList<OglasOsnovno> oo) {
@@ -69,4 +74,5 @@ public class OglasOsnovnoAdapter extends RecyclerView.Adapter<OglasOsnovnoAdapte
     public int getItemCount() {
         return oglasi.size();
     }
+
 }
