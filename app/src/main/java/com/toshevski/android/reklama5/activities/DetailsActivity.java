@@ -96,10 +96,7 @@ public class DetailsActivity extends AppCompatActivity {
         if (det_broj != null) {
             det_broj.setText(od.getBroj());
         }
-
-
     }
-
 
     class GetDetailedAd extends AsyncTask<String, Void, Void> {
 
