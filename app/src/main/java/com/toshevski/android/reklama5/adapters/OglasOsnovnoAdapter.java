@@ -3,6 +3,7 @@ package com.toshevski.android.reklama5.adapters;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ public class OglasOsnovnoAdapter extends RecyclerView.Adapter<OglasOsnovnoAdapte
     private ArrayList<OglasOsnovno> oglasi;
     private Context ctx;
 
+
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView ad_title, ad_location, ad_price, ad_time;
         public ImageView ad_image;
@@ -36,6 +39,14 @@ public class OglasOsnovnoAdapter extends RecyclerView.Adapter<OglasOsnovnoAdapte
 
     public OglasOsnovno getAd(int pos) {
         return oglasi.get(pos);
+    }
+
+    public void addAdAtPosition(OglasOsnovno o, int pos) {
+        oglasi.add(pos, o);
+    }
+
+    public void removeAd(int pos) {
+        oglasi.remove(pos);
     }
 
     public void addItems(ArrayList<OglasOsnovno> oo) {
@@ -69,6 +80,7 @@ public class OglasOsnovnoAdapter extends RecyclerView.Adapter<OglasOsnovnoAdapte
         holder.ad_time.setText(o.getVreme());
         holder.ad_title.setText(o.getIme());
         Picasso.with(ctx).load(o.getSlika()).resize(0, 75).into(holder.ad_image);
+        holder.itemView.setLongClickable(true);
     }
 
     public int getItemCount() {

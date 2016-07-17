@@ -5,13 +5,17 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity
     private RecyclerView.LayoutManager mLayoutManager;
     private String lastURL;
     private SwipeRefreshLayout srl;
+    private int contextMenuPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +137,7 @@ public class MainActivity extends AppCompatActivity
         recycler_view.addOnScrollListener(new EndlessRecyclerViewScrollListener((LinearLayoutManager) mLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                Log.i("Endless", page + " : " + totalItemsCount);
+                if (lastURL.equals("favorites")) return;
                 new AddDataAsync().execute(lastURL + "&page=" + (page + 1));
             }
         });
@@ -146,13 +151,59 @@ public class MainActivity extends AppCompatActivity
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
-                        Log.i("rvLong", "DA");
+                        contextMenuPosition = position;
+                        openContextMenu(view);
                     }
                 })
         );
 
+        registerForContextMenu(recycler_view);
+
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                  RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                int pos = viewHolder.getAdapterPosition();
+                DBManager dbm = new DBManager(getApplicationContext());
+                if (lastURL.equals("favorites")) {
+                    OglasOsnovno o = oglasiAdapter.getAd(pos);
+                    dbm.delAd(o);
+                }
+                oglasiAdapter.removeAd(pos);
+                oglasiAdapter.notifyItemRemoved(pos);
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(recycler_view);
+
+        progressDialog = ProgressDialog.show(MainActivity.this, "Ве молиме почекајте...",
+                "Симнување", true);
         new GetAllAdsAsync().execute("http://m.reklama5.mk/Search?");
 
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.add_favorites:
+                new DBManager(getApplicationContext())
+                        .AddAd(oglasiAdapter.getAd(contextMenuPosition));
+                break;
+        }
+        return true;
+    }
+
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.more_options, menu);
     }
 
     @Override
@@ -200,6 +251,7 @@ public class MainActivity extends AppCompatActivity
         int idx = id - R.id.omileni - 1;
         if (idx > 26) ++idx;
         if (idx == -1) {
+            lastURL = "favorites";
             srl.setRefreshing(true);
             DBManager dbm = new DBManager(getApplicationContext());
             oglasiAdapter.setList(dbm.GetAllAds());
@@ -239,9 +291,6 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected void onPreExecute() {
             srl.setRefreshing(true);
-            /*
-            progressDialog = ProgressDialog.show(MainActivity.this, "Ве молиме почекајте...",
-                    "Симнување", true);*/
         }
 
         public ArrayList<OglasOsnovno> oo;
@@ -250,7 +299,6 @@ public class MainActivity extends AppCompatActivity
             try {
                 lastURL = params[0];
                 oo = new Crawler().getAllAds(params[0]);
-                Log.i("MM", "Golemina: " + oo.size());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -264,7 +312,7 @@ public class MainActivity extends AppCompatActivity
             else oglasiAdapter.setList(new ArrayList<OglasOsnovno>());
             oglasiAdapter.notifyDataSetChanged();
             mLayoutManager.scrollToPosition(0);
-            //progressDialog.dismiss();
+            progressDialog.dismiss();
             srl.setRefreshing(false);
         }
     }
@@ -275,7 +323,6 @@ public class MainActivity extends AppCompatActivity
         protected Void doInBackground(String... params) {
             try {
                 OglasDetalno od = new Crawler().getDetailedAd(params[0]);
-                Log.i("MM", od.toString());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -290,9 +337,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected Void doInBackground(String... params) {
             try {
-                Log.i("New URL", params[0]);
                 oo = new Crawler().getAllAds(params[0]);
-                Log.i("MM", "Golemina: " + oo.size());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -301,7 +346,6 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            Log.i("AddDataAsync", "Dodadeni se novi..");
             oglasiAdapter.addItems(oo);
             oglasiAdapter.notifyDataSetChanged();
         }
