@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -17,7 +16,6 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -36,7 +34,6 @@ import com.toshevski.android.reklama5.database.Crawler;
 import com.toshevski.android.reklama5.database.DBManager;
 import com.toshevski.android.reklama5.listeners.EndlessRecyclerViewScrollListener;
 import com.toshevski.android.reklama5.listeners.RecyclerViewClickListener;
-import com.toshevski.android.reklama5.pojos.OglasDetalno;
 import com.toshevski.android.reklama5.pojos.OglasOsnovno;
 
 import java.io.IOException;
@@ -45,7 +42,6 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private RecyclerView recycler_view;
     private ArrayList<OglasOsnovno> oglasi = new ArrayList<>();
     private OglasOsnovnoAdapter oglasiAdapter;
     private ProgressDialog progressDialog;
@@ -125,15 +121,18 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        assert drawer != null;
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        assert navigationView != null;
         navigationView.setNavigationItemSelectedListener(this);
 
-        recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
+        RecyclerView recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
         oglasiAdapter = new OglasOsnovnoAdapter(this, oglasi);
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        assert recycler_view != null;
         recycler_view.setLayoutManager(mLayoutManager);
         recycler_view.addOnScrollListener(new EndlessRecyclerViewScrollListener((LinearLayoutManager) mLayoutManager) {
             @Override
@@ -171,6 +170,11 @@ public class MainActivity extends AppCompatActivity
             }
 
             @Override
+            public boolean isItemViewSwipeEnabled() {
+                return lastURL.equals("favorites");
+            }
+
+            @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int pos = viewHolder.getAdapterPosition();
                 DBManager dbm = new DBManager(getApplicationContext());
@@ -205,6 +209,7 @@ public class MainActivity extends AppCompatActivity
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
+        if (lastURL.equals("favorites")) return;
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.more_options, menu);
     }
@@ -212,10 +217,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        assert drawer != null;
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        } else if (lastURL.equals("http://m.reklama5.mk/Search?")) {
             super.onBackPressed();
+        } else {
+            new GetAllAdsAsync().execute("http://m.reklama5.mk/Search?");
         }
     }
 
@@ -273,10 +281,12 @@ public class MainActivity extends AppCompatActivity
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        if (drawer != null) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
         return true;
     }
-
+/*
     class GetCitiesAsync extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -291,7 +301,7 @@ public class MainActivity extends AppCompatActivity
             return null;
         }
     }
-
+*/
     class GetAllAdsAsync extends AsyncTask<String, Void, Void> {
 
         @Override
